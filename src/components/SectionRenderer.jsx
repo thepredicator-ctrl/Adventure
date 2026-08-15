@@ -1,18 +1,14 @@
 import { lazy, Suspense } from 'react';
 
 const SECTION_MAP = {
-  Overview:      lazy(() => import('../sections/Overview.jsx')),
-  Components:    lazy(() => import('../sections/Components.jsx')),
-  Animations:    lazy(() => import('../sections/Animations.jsx')),
-  Backgrounds:   lazy(() => import('../sections/Backgrounds.jsx')),
-  Showcase:      lazy(() => import('../sections/Showcase.jsx')),
-  Playground:    lazy(() => import('../sections/Playground.jsx')),
-  Templates:     lazy(() => import('../sections/Templates.jsx')),
-  Changelog:     lazy(() => import('../sections/Changelog.jsx')),
-  Community:     lazy(() => import('../sections/Community.jsx')),
-  Resources:     lazy(() => import('../sections/Resources.jsx')),
-  Documentation: lazy(() => import('../sections/Documentation.jsx')),
-  Support:       lazy(() => import('../sections/Support.jsx'))
+  Player:    lazy(() => import('../sections/Player.jsx')),
+  Episodes:  lazy(() => import('../sections/Episodes.jsx')),
+  Shows:     lazy(() => import('../sections/Shows.jsx')),
+  Stats:     lazy(() => import('../sections/Stats.jsx')),
+  Awards:    lazy(() => import('../sections/Awards.jsx')),
+  Themes:    lazy(() => import('../sections/Themes.jsx')),
+  Settings:  lazy(() => import('../sections/Settings.jsx')),
+  Shortcuts: lazy(() => import('../sections/Shortcuts.jsx'))
 };
 
 export default function SectionRenderer({ section }) {

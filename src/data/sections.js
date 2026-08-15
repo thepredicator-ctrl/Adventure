@@ -1,14 +1,11 @@
+// Sidebar section registry.
 export const SECTIONS = [
-  { label: 'Overview',      blurb: 'What this demo is and how it works.' },
-  { label: 'Components',    blurb: 'Building blocks that pair with LineSidebar.' },
-  { label: 'Animations',    blurb: 'Easing curves and motion previews.' },
-  { label: 'Backgrounds',   blurb: 'Topographic WebGL backdrop and CSS-only alternatives.' },
-  { label: 'Showcase',      blurb: 'Where a proximity-aware sidebar shines.' },
-  { label: 'Playground',    blurb: 'Tweak the LineSidebar props inline.' },
-  { label: 'Templates',     blurb: 'Starter layouts.' },
-  { label: 'Changelog',     blurb: 'Version history.' },
-  { label: 'Community',     blurb: 'Where to share and discuss.' },
-  { label: 'Resources',     blurb: 'External references.' },
-  { label: 'Documentation', blurb: 'Architecture and API.' },
-  { label: 'Support',       blurb: 'How to file an issue.' }
+  { label: 'Player',    blurb: 'Video player, server picker, AUTO NEXT, continue rail.' },
+  { label: 'Episodes',  blurb: 'Season tabs and episode grid with watched marks.' },
+  { label: 'Shows',     blurb: '7 show cards with progress bars and search.' },
+  { label: 'Stats',     blurb: 'Completion, watched counts, session, themes tried.' },
+  { label: 'Awards',    blurb: '8 achievement cards with locked/unlocked states.' },
+  { label: 'Themes',    blurb: '5 themes that recolor sidebar + background.' },
+  { label: 'Settings',  blurb: 'Default server, CRT toggle, reset progress.' },
+  { label: 'Shortcuts', blurb: 'Keyboard reference.' }
 ];

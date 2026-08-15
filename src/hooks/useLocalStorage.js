@@ -1,22 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { lsGet, lsSet } from '../lib/storage.js';
 
 export function useLocalStorage(key, initial) {
-  const [value, setValue] = useState(() => {
-    if (typeof window === 'undefined') return initial;
-    try {
-      const raw = window.localStorage.getItem(key);
-      return raw != null ? JSON.parse(raw) : initial;
-    } catch {
-      return initial;
-    }
-  });
+  const [value, setValue] = useState(() => lsGet(key, initial));
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch {
-      /* storage might be unavailable (private mode, quota) */
-    }
+    lsSet(key, value);
   }, [key, value]);
 
   const reset = useCallback(() => setValue(initial), [initial]);

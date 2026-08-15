@@ -1,17 +1,30 @@
-# Adventure — LineSidebar × Topography
+# Adventure — Cartoon Streamer × LineSidebar × Topography
 
-An interactive demo of two React components composed into a single page:
+A cartoon streamer web app with all the features of a retro pixel player, rebuilt on a modern **LineSidebar + Topography** UI. Built with **React 18 + Vite + Tailwind CSS 3**.
 
-- **`LineSidebar`** — a vertical nav whose items ease toward the cursor using a single shared `requestAnimationFrame` loop and frame-rate independent exponential smoothing. Color, horizontal shift, and marker scale all read from one CSS variable (`--effect`) so they stay in lockstep.
-- **`Topography`** — a fragment-shader line field rendered via `ogl`, with elevation-based color, contour bands, optional glow/grain, and an optional pointer bump.
+> The previous content of this repo (a single-file "Arcade Toons" pixel-art demo) is preserved in [`README-arcade-toons.md`](./README-arcade-toons.md). This is a from-scratch rework that keeps every feature but swaps the UI for the LineSidebar navigation and the WebGL Topography background.
 
-Built with **React 18 + Vite + Tailwind CSS 3**. Deployed to GitHub Pages via GitHub Actions.
+## Features
 
-> The previous content of this repo (a single-file "Arcade Toons" demo) is preserved in [`README-arcade-toons.md`](./README-arcade-toons.md).
+- **7 shows** with exact season/episode counts (Adventure Time, Cupcake & Dino, Gumball, Regular Show, Gravity Falls, Steven Universe, Kiff)
+- **4 embed servers** with one-click switching (vidsrc.in, vidsrc.pro, vidlink.pro, vsembed.ru)
+- **Video player** with iframe embed, prev/next, mark-watched
+- **Episode grid** with season tabs and watched ✓ marks
+- **Show grid** with search filter and per-show progress bars
+- **Stats panel** — overall completion, watched counts, session, themes tried, achievements
+- **8 achievements** with locked/unlocked states (First Episode, Binge Watcher, Power Binger, Season Finisher, Completionist, Server Hopper, Style Chameleon, Explorer)
+- **5 themes** that recolor both the sidebar and the topographic background (Amethyst, Arcade, GameBoy, Cyberpunk, Vaporwave)
+- **AUTO NEXT** toggle — listens for `window.message` events from the iframe and auto-advances
+- **Continue watching rail** — 6 most recently watched positions
+- **Per-show localStorage persistence** — each show remembers its own season/episode; global prefs (server, autoplay, theme, CRT) also saved
+- **Settings drawer** — default server, CRT toggle, reset current show, reset all progress (with confirm modal)
+- **Keyboard shortcuts** — ← / → for prev/next, A for AUTO NEXT, 1–4 for servers, T to cycle theme
+- **Toast notifications** for actions and achievement unlocks
+- **CRT scanline overlay** toggle
 
 ## Live demo
 
-Once GitHub Pages is enabled with **Source: GitHub Actions**, the site is live at:
+Deployed via GitHub Actions to:
 
 ```
 https://thepredicator-ctrl.github.io/Adventure/
@@ -26,16 +39,46 @@ npm run build    # produce dist/
 npm run preview  # preview the built site
 ```
 
-## Project structure
-
-See [`docs/architecture.md`](./docs/architecture.md) for the full tree. Key paths:
+## Architecture
 
 ```
-src/components/LineSidebar.jsx     # as-provided
-src/components/Topography.jsx      # as-provided
-src/App.jsx                        # composition root
-src/sections/                      # 12 lazy-loaded content panels
-.github/workflows/deploy.yml       # GH Pages auto-deploy
+src/
+├── context/PlayerContext.jsx    # single source of truth (state + actions)
+├── data/
+│   ├── shows.js                 # 7 shows with season/episode counts
+│   ├── servers.js               # 4 embed server URL builders
+│   ├── achievements.js          # 8 achievement definitions
+│   ├── themes.js                # 5 themes (sidebar + topography palettes)
+│   └── sections.js              # sidebar section registry
+├── lib/
+│   ├── storage.js               # namespaced localStorage helpers
+│   ├── episodes.js              # episode math (totals, prev/next, keys)
+│   └── format.js                # pad2, formatDate, slugify
+├── hooks/
+│   ├── useLocalStorage.js
+│   └── useMediaQuery.js
+├── components/
+│   ├── LineSidebar.jsx          # as-provided (unchanged)
+│   ├── Topography.jsx           # as-provided (unchanged)
+│   ├── SidebarLayout.jsx        # wraps LineSidebar, reads theme from context
+│   ├── SectionRenderer.jsx      # lazy-loads section components
+│   ├── Header.jsx               # shows current show + season/episode
+│   ├── Footer.jsx
+│   ├── Toast.jsx                # reads toast from context
+│   ├── ShowIcon.jsx             # colored show badge
+│   └── ProgressBar.jsx
+├── sections/
+│   ├── Player.jsx               # video + server picker + AUTO NEXT + continue rail
+│   ├── Episodes.jsx             # season tabs + episode grid
+│   ├── Shows.jsx                # 7 cards with search + progress
+│   ├── Stats.jsx                # completion + per-show progress
+│   ├── Awards.jsx               # 8 achievement cards
+│   ├── Themes.jsx               # 5 theme picker
+│   ├── Settings.jsx             # default server, CRT, resets
+│   └── Shortcuts.jsx            # keyboard reference
+├── App.jsx                      # composition root (provider + layout + bg)
+├── main.jsx                     # React root
+└── index.css                    # Tailwind entry + tokens
 ```
 
 ## Component props
@@ -43,37 +86,6 @@ src/sections/                      # 12 lazy-loaded content panels
 - [LineSidebar props](./docs/props-linesidebar.md)
 - [Topography props](./docs/props-topography.md)
 
-## Usage
-
-```jsx
-import LineSidebar from './LineSidebar';
-import Topography from './Topography';
-
-<div className="relative h-screen">
-  <Topography lowColor="#1e0a3c" midColor="#7c3aed" highColor="#f0abfc" />
-  <LineSidebar
-    items={['Overview', 'Components', 'Animations', 'Backgrounds', 'Showcase']}
-    accentColor="#A855F7"
-    textColor="#c4c4c4"
-    markerColor="#6c6c6c"
-    showIndex
-    showMarker
-    proximityRadius={100}
-    maxShift={30}
-    falloff="smooth"
-    markerLength={60}
-    markerGap={0}
-    tickScale={0.5}
-    scaleTick
-    itemGap={20}
-    fontSize={1.1}
-    smoothing={100}
-    defaultActive={0}
-    onItemClick={(index, label) => console.log(index, label)}
-  />
-</div>
-```
-
 ## License
 
-MIT — see `LICENSE` file if present. Source components © their respective authors.
+MIT — see `LICENSE`.
