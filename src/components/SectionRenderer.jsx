@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import LaserWindow from './LaserWindow.jsx';
 
 const SECTION_MAP = {
   Player:    lazy(() => import('../sections/Player.jsx')),
@@ -19,13 +20,17 @@ export default function SectionRenderer({ section }) {
   return (
     <Suspense
       fallback={
-        <div className="flex h-40 items-center justify-center text-white/40">
-          <span className="animate-pulse">Loading…</span>
-        </div>
+        <LaserWindow>
+          <div className="flex h-40 items-center justify-center text-white/40">
+            <span className="animate-pulse">Loading…</span>
+          </div>
+        </LaserWindow>
       }
     >
       <div key={section.label} className="animate-fade-in">
-        <Comp />
+        <LaserWindow>
+          <Comp />
+        </LaserWindow>
       </div>
     </Suspense>
   );

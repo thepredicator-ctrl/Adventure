@@ -1,19 +1,22 @@
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { SERVER_LIST } from '../data/servers.js';
 import { SHOWS } from '../data/shows.js';
-import { isAtFirstEp, isAtLastEp } from '../lib/episodes.js';
+import { isAtFirstEp, isAtLastEp, epKey } from '../lib/episodes.js';
 import { pad2 } from '../lib/format.js';
 import ShowIcon from '../components/ShowIcon.jsx';
 
 export default function Player() {
   const {
     show, global, currentServer, videoUrl,
-    setServer, setAutoplay, gotoNext, gotoPrev,
-    markCurrentWatched, continueList, jumpTo
+    setSeason, setEpisode, setServer, setAutoplay,
+    gotoNext, gotoPrev, markCurrentWatched, continueList, jumpTo,
+    watchedMap
   } = usePlayer();
 
   const atFirst = isAtFirstEp(show, global.season, global.episode);
   const atLast = isAtLastEp(show, global.season, global.episode);
+  const seasonEps = show.seasons[global.season - 1] ?? 0;
+  const watched = watchedMap[show.id] ?? [];
 
   return (
     <div className="space-y-6">
@@ -46,21 +49,81 @@ export default function Player() {
               disabled={atFirst}
               className="rounded-md border border-white/15 px-3 py-1.5 text-sm text-white/80 transition hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
             >
-              ← Prev
+              &larr; Prev
             </button>
             <button
               onClick={markCurrentWatched}
               className="rounded-md border border-fuchsia-400/40 bg-fuchsia-500/20 px-3 py-1.5 text-sm text-fuchsia-100 transition hover:bg-fuchsia-500/30"
             >
-              ✓ Mark watched
+              &#10003; Mark watched
             </button>
             <button
               onClick={gotoNext}
               disabled={atLast}
               className="rounded-md border border-white/15 px-3 py-1.5 text-sm text-white/80 transition hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
             >
-              Next →
+              Next &rarr;
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Season & Episode picker */}
+      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="text-sm font-medium text-white">Season &amp; Episode</div>
+          <div className="text-xs text-white/40">{seasonEps} episodes in season {global.season}</div>
+        </div>
+
+        {/* Season tabs (compact) */}
+        <div className="mb-4">
+          <div className="mb-2 text-[11px] uppercase tracking-wider text-white/40">Season</div>
+          <div className="flex flex-wrap gap-1.5">
+            {show.seasons.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSeason(i + 1)}
+                className={`rounded-md border px-2.5 py-1 text-xs font-mono transition ${
+                  global.season === i + 1
+                    ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
+                    : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
+                }`}
+              >
+                S{pad2(i + 1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Episode grid (current season) */}
+        <div>
+          <div className="mb-2 text-[11px] uppercase tracking-wider text-white/40">Episode</div>
+          <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-8 md:grid-cols-10">
+            {Array.from({ length: seasonEps }, (_, i) => {
+              const ep = i + 1;
+              const key = epKey(global.season, ep);
+              const isActive = ep === global.episode;
+              const isWatched = watched.includes(key);
+              return (
+                <button
+                  key={ep}
+                  onClick={() => setEpisode(ep)}
+                  className={`relative aspect-square rounded-md border text-xs font-mono transition ${
+                    isActive
+                      ? 'border-fuchsia-400/60 bg-fuchsia-500/25 text-white'
+                      : isWatched
+                      ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/60'
+                      : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
+                  }`}
+                  title={`S${pad2(global.season)}E${pad2(ep)}`}
+                >
+                  {pad2(ep)}
+                  {isWatched && (
+                    <span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
