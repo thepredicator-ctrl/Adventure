@@ -6,11 +6,13 @@ import SidebarLayout from './components/SidebarLayout.jsx';
 import SectionRenderer from './components/SectionRenderer.jsx';
 import Topography from './components/Topography.jsx';
 import Toast from './components/Toast.jsx';
+import LoadingScreen from './components/LoadingScreen.jsx';
 import { SECTIONS } from './data/sections.js';
 import { THEMES } from './data/themes.js';
 
 function AppShell() {
   const [active, setActive] = useState(0);
+  const [booted, setBooted] = useState(false);
   const { global } = usePlayer();
   const theme = THEMES.find(t => t.id === global.theme) ?? THEMES[0];
 
@@ -24,6 +26,9 @@ function AppShell() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-ink-950 text-white">
+      {/* Boot / loading screen — shows on first load, fades out */}
+      {!booted && <LoadingScreen onComplete={() => setBooted(true)} />}
+
       {/* Topographic background */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-60">
         <Topography
