@@ -3,9 +3,10 @@ import ParticleText from './ParticleText.jsx';
 import TextLoop from './TextLoop.jsx';
 import { Terminal, TypingAnimation, AnimatedSpan } from './magicui/Terminal.jsx';
 
-// Lazy-load LightTunnel so the heavy WebGL shader only loads when the
-// loading screen actually mounts.
+// Lazy-load the heavy WebGL shaders so they only load when the loading
+// screen actually mounts.
 const LightTunnel = lazy(() => import('./LightTunnel.jsx'));
+const Strands = lazy(() => import('./Strands.jsx'));
 
 // Total boot sequence runs ~10s. User can skip at any time.
 const BOOT_DURATION_MS = 10500;
@@ -72,8 +73,35 @@ export default function LoadingScreen({ onComplete }) {
         </Suspense>
       </div>
 
+      {/* Strands layer — flowing colored light beams with a glass lens orb
+          centered behind the terminal. Adds depth and a focal point. */}
+      <div className="pointer-events-none absolute inset-0">
+        <Suspense fallback={null}>
+          <Strands
+            colors={['#A855F7', '#f0abfc', '#5227FF', '#7c3aed']}
+            count={4}
+            speed={0.4}
+            amplitude={1.2}
+            waviness={1.1}
+            thickness={0.65}
+            glow={2.6}
+            taper={2.6}
+            spread={1}
+            hueShift={0}
+            intensity={0.55}
+            saturation={1.4}
+            opacity={0.9}
+            scale={1.7}
+            glass
+            refraction={1.1}
+            dispersion={1.2}
+            glassSize={1.05}
+          />
+        </Suspense>
+      </div>
+
       {/* Solid dark overlay so the tunnel never shows through to the page */}
-      <div className="pointer-events-none absolute inset-0 bg-[#05050a]/40" />
+      <div className="pointer-events-none absolute inset-0 bg-[#05050a]/35" />
 
       {/* Top vignette for readability of the title */}
       <div

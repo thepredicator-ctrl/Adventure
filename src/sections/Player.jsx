@@ -1,9 +1,10 @@
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { SERVER_LIST } from '../data/servers.js';
 import { SHOWS } from '../data/shows.js';
-import { isAtFirstEp, isAtLastEp, epKey } from '../lib/episodes.js';
+import { isAtFirstEp, isAtLastEp } from '../lib/episodes.js';
 import { pad2 } from '../lib/format.js';
 import ShowIcon from '../components/ShowIcon.jsx';
+import OptionWheel from '../components/OptionWheel.jsx';
 
 export default function Player() {
   const {
@@ -16,7 +17,9 @@ export default function Player() {
   const atFirst = isAtFirstEp(show, global.season, global.episode);
   const atLast = isAtLastEp(show, global.season, global.episode);
   const seasonEps = show.seasons[global.season - 1] ?? 0;
-  const watched = watchedMap[show.id] ?? [];
+
+  const seasonItems = show.seasons.map((_, i) => `S${pad2(i + 1)}`);
+  const episodeItems = Array.from({ length: seasonEps }, (_, i) => `E${pad2(i + 1)}`);
 
   return (
     <div className="space-y-6">
@@ -68,63 +71,77 @@ export default function Player() {
         </div>
       </div>
 
-      {/* Season & Episode picker */}
+      {/* Season & Episode picker (OptionWheel) */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
         <div className="mb-4 flex items-center justify-between">
           <div className="text-sm font-medium text-white">Season &amp; Episode</div>
-          <div className="text-xs text-white/40">{seasonEps} episodes in season {global.season}</div>
-        </div>
-
-        {/* Season tabs (compact) */}
-        <div className="mb-4">
-          <div className="mb-2 text-[11px] uppercase tracking-wider text-white/40">Season</div>
-          <div className="flex flex-wrap gap-1.5">
-            {show.seasons.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setSeason(i + 1)}
-                className={`rounded-md border px-2.5 py-1 text-xs font-mono transition ${
-                  global.season === i + 1
-                    ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
-                    : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
-                }`}
-              >
-                S{pad2(i + 1)}
-              </button>
-            ))}
+          <div className="font-mono text-xs text-white/50">
+            <span className="text-fuchsia-300">S{pad2(global.season)}</span>
+            <span className="mx-1 text-white/30">·</span>
+            <span className="text-fuchsia-300">E{pad2(global.episode)}</span>
+            <span className="mx-2 text-white/20">|</span>
+            <span className="text-white/40">{seasonEps} eps this season</span>
           </div>
         </div>
 
-        {/* Episode grid (current season) */}
-        <div>
-          <div className="mb-2 text-[11px] uppercase tracking-wider text-white/40">Episode</div>
-          <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-8 md:grid-cols-10">
-            {Array.from({ length: seasonEps }, (_, i) => {
-              const ep = i + 1;
-              const key = epKey(global.season, ep);
-              const isActive = ep === global.episode;
-              const isWatched = watched.includes(key);
-              return (
-                <button
-                  key={ep}
-                  onClick={() => setEpisode(ep)}
-                  className={`relative aspect-square rounded-md border text-xs font-mono transition ${
-                    isActive
-                      ? 'border-fuchsia-400/60 bg-fuchsia-500/25 text-white'
-                      : isWatched
-                      ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/60'
-                      : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
-                  }`}
-                  title={`S${pad2(global.season)}E${pad2(ep)}`}
-                >
-                  {pad2(ep)}
-                  {isWatched && (
-                    <span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  )}
-                </button>
-              );
-            })}
+        <div className="grid grid-cols-2 gap-2">
+          {/* Season wheel — left, faces right (selected near center) */}
+          <div className="relative rounded-xl bg-black/30 p-2">
+            <div className="absolute left-0 right-0 top-2 text-center text-[10px] uppercase tracking-widest text-white/40">
+              Season
+            </div>
+            <div className="h-[260px]">
+              <OptionWheel
+                key={`season-wheel-${show.id}-${global.season}`}
+                items={seasonItems}
+                defaultSelected={global.season - 1}
+                onChange={(idx) => setSeason(idx + 1)}
+                side="right"
+                textColor="#9ca3af"
+                activeColor="#f0abfc"
+                fontSize={2}
+                spacing={1.3}
+                curve={1}
+                tilt={7}
+                blur={1.4}
+                fade={0.32}
+                minOpacity={0.05}
+                smoothing={180}
+                inset={36}
+              />
+            </div>
           </div>
+
+          {/* Episode wheel — right, faces left (selected near center) */}
+          <div className="relative rounded-xl bg-black/30 p-2">
+            <div className="absolute left-0 right-0 top-2 text-center text-[10px] uppercase tracking-widest text-white/40">
+              Episode
+            </div>
+            <div className="h-[260px]">
+              <OptionWheel
+                key={`episode-wheel-${show.id}-${global.season}-${global.episode}`}
+                items={episodeItems}
+                defaultSelected={Math.min(global.episode - 1, episodeItems.length - 1)}
+                onChange={(idx) => setEpisode(idx + 1)}
+                side="left"
+                textColor="#9ca3af"
+                activeColor="#f0abfc"
+                fontSize={2}
+                spacing={1.3}
+                curve={1}
+                tilt={7}
+                blur={1.4}
+                fade={0.32}
+                minOpacity={0.05}
+                smoothing={180}
+                inset={36}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-3 text-center text-[11px] text-white/35">
+          Scroll, drag, or click an item · Arrow keys also work
         </div>
       </div>
 
