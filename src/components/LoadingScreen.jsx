@@ -1,9 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
-import LightTunnel from './LightTunnel.jsx';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import ParticleText from './ParticleText.jsx';
+import TextLoop from './TextLoop.jsx';
 import { Terminal, TypingAnimation, AnimatedSpan } from './magicui/Terminal.jsx';
 
-// Total boot sequence runs ~9.5s. User can skip at any time.
-const BOOT_DURATION_MS = 10000;
+// Lazy-load LightTunnel so the heavy WebGL shader only loads when the
+// loading screen actually mounts.
+const LightTunnel = lazy(() => import('./LightTunnel.jsx'));
+
+// Total boot sequence runs ~10s. User can skip at any time.
+const BOOT_DURATION_MS = 10500;
 
 export default function LoadingScreen({ onComplete }) {
   const [hiding, setHiding] = useState(false);
@@ -28,106 +33,131 @@ export default function LoadingScreen({ onComplete }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-between gap-4 px-6 py-8 transition-opacity duration-500 ${
         hiding ? 'opacity-0' : 'opacity-100'
       }`}
+      style={{ backgroundColor: '#05050a' }}
     >
-      {/* LightTunnel background */}
-      <div className="absolute inset-0">
-        <LightTunnel
-          cableColor="#A855F7"
-          pulseColor="#f0abfc"
-          tunnelColor="#5227FF"
-          tunnelOpacity={0.15}
-          speed={0.15}
-          flowDirection="outward"
-          pulseSpeed={2.2}
-          pulseLength={0.3}
-          pulseBlend={0.8}
-          pulseWidth={1.1}
-          cableCount={24}
-          thickness={0.4}
-          rimWidth={0.18}
-          waviness={0.35}
-          sway={0.6}
-          size={1.1}
-          glow={1.2}
-          fadeNear={0.4}
-          fadeFar={2.2}
-          brightness={1.1}
-          colorVariance
-          grain
-          grainIntensity={0.04}
-          opacity={0.95}
-          mouseInteraction
-          mouseStrength={0.12}
-        />
+      {/* LightTunnel background — opaque canvas, sits behind everything */}
+      <div className="pointer-events-none absolute inset-0">
+        <Suspense fallback={null}>
+          <LightTunnel
+            cableColor="#A855F7"
+            pulseColor="#f0abfc"
+            tunnelColor="#5227FF"
+            tunnelOpacity={0.15}
+            speed={0.15}
+            flowDirection="outward"
+            pulseSpeed={2.2}
+            pulseLength={0.3}
+            pulseBlend={0.8}
+            pulseWidth={1.1}
+            cableCount={24}
+            thickness={0.4}
+            rimWidth={0.18}
+            waviness={0.35}
+            sway={0.6}
+            size={1.1}
+            glow={1.2}
+            fadeNear={0.4}
+            fadeFar={2.2}
+            brightness={1.1}
+            colorVariance
+            grain
+            grainIntensity={0.04}
+            opacity={0.95}
+            mouseInteraction
+            mouseStrength={0.12}
+          />
+        </Suspense>
       </div>
 
-      {/* Vignette for readability */}
+      {/* Solid dark overlay so the tunnel never shows through to the page */}
+      <div className="pointer-events-none absolute inset-0 bg-[#05050a]/40" />
+
+      {/* Top vignette for readability of the title */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
         style={{
-          background:
-            'radial-gradient(600px 400px at 50% 50%, rgba(8,8,10,0.5), rgba(8,8,10,0.9))'
+          background: 'linear-gradient(to bottom, rgba(5,5,10,0.85) 0%, rgba(5,5,10,0.35) 60%, transparent 100%)'
         }}
       />
 
-      {/* Terminal + brand */}
-      <div className="relative z-10 w-full max-w-2xl px-6">
-        <div className="mb-6 text-center">
-          <div className="inline-flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-indigo-500 text-sm font-bold text-white">
-              A
-            </div>
-            <div className="text-left">
-              <div className="text-lg font-semibold tracking-tight text-white">Adventure</div>
-              <div className="text-[11px] uppercase tracking-widest text-white/40">
-                Booting…
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Bottom vignette for readability of the text loop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+        style={{
+          background: 'linear-gradient(to top, rgba(5,5,10,0.95) 0%, rgba(5,5,10,0.55) 60%, transparent 100%)'
+        }}
+      />
 
+      {/* TOP: ParticleText title */}
+      <div className="relative z-10 w-full max-w-4xl">
+        <ParticleText
+          text="ADVENTURE"
+          particleSize={2.2}
+          density={4}
+          color="#f0abfc"
+          highlightColor="#A855F7"
+          scatter={220}
+          gatherDuration={1800}
+          stagger={500}
+          pointerRepel={50}
+          repelRadius={140}
+          idleDrift={0.9}
+          trigger="mount"
+          fontSize="clamp(3rem, 13vw, 9rem)"
+          fontWeight={800}
+          fontFamily="inherit"
+          glow
+          className="h-[28vh] min-h-[200px]"
+        />
+        <div className="mt-1 text-center text-[11px] uppercase tracking-[0.4em] text-white/40">
+          Cartoon Streamer · v1.0
+        </div>
+      </div>
+
+      {/* MIDDLE: Terminal */}
+      <div className="relative z-10 w-full max-w-2xl">
         <Terminal title="adventure — bash">
           <TypingAnimation delay={0} className="text-white">
             &gt; adventure init
           </TypingAnimation>
 
           <AnimatedSpan delay={1100} className="text-green-500">
-            ✔ Loading show database.
+            &#10004; Loading show database.
           </AnimatedSpan>
 
           <AnimatedSpan delay={1700} className="text-green-500">
-            ✔ Verifying 7 shows.
+            &#10004; Verifying 7 shows.
           </AnimatedSpan>
 
           <AnimatedSpan delay={2300} className="text-green-500">
-            ✔ Connecting to embed servers.
+            &#10004; Connecting to embed servers.
           </AnimatedSpan>
 
           <AnimatedSpan delay={2900} className="text-green-500">
-            ✔ Found 4 servers online.
+            &#10004; Found 4 servers online.
           </AnimatedSpan>
 
           <AnimatedSpan delay={3500} className="text-green-500">
-            ✔ Loading achievements.
+            &#10004; Loading achievements.
           </AnimatedSpan>
 
           <AnimatedSpan delay={4100} className="text-green-500">
-            ✔ 8 achievements ready.
+            &#10004; 8 achievements ready.
           </AnimatedSpan>
 
           <AnimatedSpan delay={4700} className="text-green-500">
-            ✔ Restoring watch progress.
+            &#10004; Restoring watch progress.
           </AnimatedSpan>
 
           <AnimatedSpan delay={5300} className="text-green-500">
-            ✔ Syncing localStorage.
+            &#10004; Syncing localStorage.
           </AnimatedSpan>
 
           <AnimatedSpan delay={5900} className="text-blue-500">
-            <span>ℹ Updated 1 file:</span>
+            <span>&#8505; Updated 1 file:</span>
             <span className="pl-2">- src/context/PlayerContext.jsx</span>
           </AnimatedSpan>
 
@@ -140,7 +170,7 @@ export default function LoadingScreen({ onComplete }) {
           </TypingAnimation>
         </Terminal>
 
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           <div className="font-mono text-xs text-white/30">
             7 shows · 4 servers · 5 themes · 8 achievements
           </div>
@@ -148,9 +178,31 @@ export default function LoadingScreen({ onComplete }) {
             onClick={finish}
             className="rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/70 backdrop-blur-sm transition hover:border-white/40 hover:text-white"
           >
-            Skip →
+            Skip &rarr;
           </button>
         </div>
+      </div>
+
+      {/* BOTTOM: TextLoop ribbon */}
+      <div className="relative z-10 w-full max-w-5xl">
+        <TextLoop
+          text="ADVENTURE TIME"
+          shape="wave"
+          speed={120}
+          direction="forward"
+          separator="&#10022;"
+          curviness={90}
+          fontSize={36}
+          fontWeight={800}
+          letterSpacing={3}
+          uppercase
+          color="#ffffff"
+          ribbon
+          ribbonColor="#5227FF"
+          ribbonWidth={70}
+          pauseOnHover
+          className="opacity-90"
+        />
       </div>
     </div>
   );
