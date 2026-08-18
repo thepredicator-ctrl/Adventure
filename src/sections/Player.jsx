@@ -148,8 +148,11 @@ export default function Player() {
 
       {/* Server picker */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-        <div className="mb-3 text-sm font-medium text-white">Embed server</div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="text-sm font-medium text-white">Embed server</div>
+          <div className="text-xs text-white/40">If a server has no source, try another · keys 1–9</div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {SERVER_LIST.map(s => (
             <button
               key={s.id}

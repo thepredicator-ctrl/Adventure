@@ -2,7 +2,7 @@ const SHORTCUTS = [
   { key: '← / P',  action: 'Previous episode' },
   { key: '→ / N',  action: 'Next episode' },
   { key: 'A',      action: 'Toggle Auto Next' },
-  { key: '1 – 4',  action: 'Switch server' },
+  { key: '1 – 9',  action: 'Switch server' },
   { key: 'T',      action: 'Cycle theme' },
   { key: 'S',      action: 'Focus search (on Shows tab)' },
   { key: '?',      action: 'Show this help' },

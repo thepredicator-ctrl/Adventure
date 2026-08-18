@@ -194,7 +194,14 @@ export function PlayerProvider({ children }) {
       if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'n') { e.preventDefault(); gotoNext(); }
       else if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'p') { e.preventDefault(); gotoPrev(); }
       else if (e.key.toLowerCase() === 'a') { e.preventDefault(); setAutoplay(!global.autoplay); showToast(`AUTO NEXT ${!global.autoplay ? 'ON' : 'OFF'}`); }
-      else if (e.key >= '1' && e.key <= '4') { e.preventDefault(); setServer(Number(e.key)); showToast(`SERVER ${e.key}`); }
+      else if (e.key >= '1' && e.key <= '9') {
+        const id = Number(e.key);
+        if (SERVERS[id]) {
+          e.preventDefault();
+          setServer(id);
+          showToast(`SERVER ${id}`);
+        }
+      }
       else if (e.key.toLowerCase() === 't') { e.preventDefault();
         const idx = THEMES.findIndex(t => t.id === global.theme);
         const next = THEMES[(idx + 1) % THEMES.length];
