@@ -22,7 +22,7 @@ export default function Episodes() {
             onClick={() => setSeason(i + 1)}
             className={`rounded-md border px-3 py-1.5 text-sm font-mono transition ${
               global.season === i + 1
-                ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
+                ? 'border-white/60 bg-white/15 text-white'
                 : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
             }`}
           >
@@ -49,16 +49,16 @@ export default function Episodes() {
                 onClick={() => setEpisode(ep)}
                 className={`relative aspect-square rounded-lg border text-sm font-mono transition ${
                   isActive
-                    ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
+                    ? 'border-white/60 bg-white/15 text-white'
                     : isWatched
-                    ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/60'
+                    ? 'border-white/30 bg-white/10 text-white hover:border-white/60'
                     : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
                 }`}
                 title={`S${pad2(global.season)}E${pad2(ep)}`}
               >
                 {pad2(ep)}
                 {isWatched && (
-                  <span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-white" />
                 )}
               </button>
             );

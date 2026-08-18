@@ -37,16 +37,16 @@ export default function LoadingScreen({ onComplete }) {
       className={`fixed inset-0 z-50 flex flex-col items-center justify-between gap-4 px-6 py-8 transition-opacity duration-500 ${
         hiding ? 'opacity-0' : 'opacity-100'
       }`}
-      style={{ backgroundColor: '#05050a' }}
+      style={{ backgroundColor: '#000000' }}
     >
       {/* LightTunnel background — opaque canvas, sits behind everything */}
       <div className="pointer-events-none absolute inset-0">
         <Suspense fallback={null}>
           <LightTunnel
-            cableColor="#A855F7"
-            pulseColor="#f0abfc"
-            tunnelColor="#5227FF"
-            tunnelOpacity={0.15}
+            cableColor="#ffffff"
+            pulseColor="#ffffff"
+            tunnelColor="#cccccc"
+            tunnelOpacity={0.18}
             speed={0.15}
             flowDirection="outward"
             pulseSpeed={2.2}
@@ -62,35 +62,36 @@ export default function LoadingScreen({ onComplete }) {
             glow={1.2}
             fadeNear={0.4}
             fadeFar={2.2}
-            brightness={1.1}
-            colorVariance
+            brightness={1.0}
+            colorVariance={false}
             grain
-            grainIntensity={0.04}
-            opacity={0.95}
+            grainIntensity={0.05}
+            opacity={0.85}
             mouseInteraction
             mouseStrength={0.12}
           />
         </Suspense>
       </div>
 
-      {/* Strands layer — flowing colored light beams with a glass lens orb
-          centered behind the terminal. Adds depth and a focal point. */}
+      {/* Strands layer — flowing white light beams with a glass lens orb
+          centered behind the terminal. Adds depth and a focal point.
+          All monochrome for the black-and-white theme. */}
       <div className="pointer-events-none absolute inset-0">
         <Suspense fallback={null}>
           <Strands
-            colors={['#A855F7', '#f0abfc', '#5227FF', '#7c3aed']}
+            colors={['#ffffff', '#cccccc', '#888888', '#dddddd']}
             count={4}
             speed={0.4}
             amplitude={1.2}
             waviness={1.1}
             thickness={0.65}
-            glow={2.6}
+            glow={2.4}
             taper={2.6}
             spread={1}
             hueShift={0}
-            intensity={0.55}
-            saturation={1.4}
-            opacity={0.9}
+            intensity={0.5}
+            saturation={0}
+            opacity={0.8}
             scale={1.7}
             glass
             refraction={1.1}
@@ -101,13 +102,13 @@ export default function LoadingScreen({ onComplete }) {
       </div>
 
       {/* Solid dark overlay so the tunnel never shows through to the page */}
-      <div className="pointer-events-none absolute inset-0 bg-[#05050a]/35" />
+      <div className="pointer-events-none absolute inset-0 bg-black/40" />
 
       {/* Top vignette for readability of the title */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
         style={{
-          background: 'linear-gradient(to bottom, rgba(5,5,10,0.85) 0%, rgba(5,5,10,0.35) 60%, transparent 100%)'
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 60%, transparent 100%)'
         }}
       />
 
@@ -115,18 +116,18 @@ export default function LoadingScreen({ onComplete }) {
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
         style={{
-          background: 'linear-gradient(to top, rgba(5,5,10,0.95) 0%, rgba(5,5,10,0.55) 60%, transparent 100%)'
+          background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.55) 60%, transparent 100%)'
         }}
       />
 
       {/* TOP: ParticleText title */}
       <div className="relative z-10 w-full max-w-4xl">
         <ParticleText
-          text="ADVENTURE"
+          text="adventure"
           particleSize={2.2}
           density={4}
-          color="#f0abfc"
-          highlightColor="#A855F7"
+          color="#ffffff"
+          highlightColor="#888888"
           scatter={220}
           gatherDuration={1800}
           stagger={500}
@@ -152,45 +153,45 @@ export default function LoadingScreen({ onComplete }) {
             &gt; adventure init
           </TypingAnimation>
 
-          <AnimatedSpan delay={1100} className="text-green-500">
+          <AnimatedSpan delay={1100} className="text-white">
             &#10004; Loading show database.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={1700} className="text-green-500">
+          <AnimatedSpan delay={1700} className="text-white">
             &#10004; Verifying 7 shows.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={2300} className="text-green-500">
+          <AnimatedSpan delay={2300} className="text-white">
             &#10004; Connecting to embed servers.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={2900} className="text-green-500">
+          <AnimatedSpan delay={2900} className="text-white">
             &#10004; Found 4 servers online.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={3500} className="text-green-500">
+          <AnimatedSpan delay={3500} className="text-white">
             &#10004; Loading achievements.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={4100} className="text-green-500">
+          <AnimatedSpan delay={4100} className="text-white">
             &#10004; 8 achievements ready.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={4700} className="text-green-500">
+          <AnimatedSpan delay={4700} className="text-white">
             &#10004; Restoring watch progress.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={5300} className="text-green-500">
+          <AnimatedSpan delay={5300} className="text-white">
             &#10004; Syncing localStorage.
           </AnimatedSpan>
 
-          <AnimatedSpan delay={5900} className="text-blue-500">
+          <AnimatedSpan delay={5900} className="text-white/70">
             <span>&#8505; Updated 1 file:</span>
             <span className="pl-2">- src/context/PlayerContext.jsx</span>
           </AnimatedSpan>
 
           <TypingAnimation delay={6700} duration={40} className="text-white/60">
-            Success! Adventure ready.
+            Success! adventure ready.
           </TypingAnimation>
 
           <TypingAnimation delay={8200} duration={40} className="text-white/60">
@@ -214,7 +215,7 @@ export default function LoadingScreen({ onComplete }) {
       {/* BOTTOM: TextLoop ribbon */}
       <div className="relative z-10 w-full max-w-5xl">
         <TextLoop
-          text="ADVENTURE TIME"
+          text="adventure"
           shape="wave"
           speed={120}
           direction="forward"
@@ -223,10 +224,10 @@ export default function LoadingScreen({ onComplete }) {
           fontSize={36}
           fontWeight={800}
           letterSpacing={3}
-          uppercase
+          uppercase={false}
           color="#ffffff"
           ribbon
-          ribbonColor="#5227FF"
+          ribbonColor="#2a2a2a"
           ribbonWidth={70}
           pauseOnHover
           className="opacity-90"

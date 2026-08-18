@@ -6,13 +6,14 @@ export default function Header({ activeLabel }) {
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/10 bg-black/40 px-6 py-4 backdrop-blur-xl">
       <div className="flex items-center gap-3">
         <div
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold text-black"
-          style={{ background: show.color }}
+          className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 text-sm font-bold text-black"
+          style={{ background: '#ffffff' }}
+          title={show.name}
         >
           {show.icon}
         </div>
         <div>
-          <div className="text-sm font-semibold tracking-tight text-white">{show.shortName}</div>
+          <div className="text-sm font-semibold tracking-tight text-white">adventure</div>
           <div className="text-[11px] uppercase tracking-widest text-white/40">
             S{String(global.season).padStart(2, '0')} · E{String(global.episode).padStart(2, '0')} · {activeLabel}
           </div>

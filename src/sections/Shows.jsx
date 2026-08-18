@@ -25,7 +25,7 @@ export default function Shows() {
         value={query}
         onChange={e => setQuery(e.target.value)}
         placeholder="Search shows…"
-        className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder-white/40 focus:border-fuchsia-400/50 focus:outline-none"
+        className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white placeholder-white/40 focus:border-white/50 focus:outline-none"
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -40,7 +40,7 @@ export default function Shows() {
               onClick={() => selectShow(i)}
               className={`rounded-2xl border p-5 text-left transition ${
                 isActive
-                  ? 'border-fuchsia-400/60 bg-fuchsia-500/10'
+                  ? 'border-white/60 bg-white/10'
                   : 'border-white/10 bg-white/[0.03] hover:border-white/30'
               }`}
             >

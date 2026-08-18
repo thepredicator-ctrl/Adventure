@@ -28,7 +28,7 @@ export default function Settings() {
               onClick={() => { setServer(s.id); showToast(`Default server: ${s.name}`); }}
               className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
                 global.server === s.id
-                  ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
+                  ? 'border-white/60 bg-white/15 text-white'
                   : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
               }`}
             >
@@ -53,7 +53,7 @@ export default function Settings() {
           }}
           role="switch"
           aria-checked={global.settings.crtEffect}
-          className={`relative h-7 w-12 rounded-full transition ${global.settings.crtEffect ? 'bg-fuchsia-500' : 'bg-white/15'}`}
+          className={`relative h-7 w-12 rounded-full transition ${global.settings.crtEffect ? 'bg-white' : 'bg-white/15'}`}
         >
           <span
             className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${global.settings.crtEffect ? 'left-6' : 'left-1'}`}
@@ -83,7 +83,7 @@ export default function Settings() {
       {/* Confirm modal */}
       {confirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/15 bg-ink-900 p-6">
+          <div className="w-full max-w-md rounded-2xl border border-white/15 bg-black p-6">
             <div className="text-sm text-white">{confirm.msg}</div>
             <div className="mt-5 flex justify-end gap-3">
               <button

@@ -20,13 +20,13 @@ export default function Themes() {
               onClick={() => setTheme(t.id)}
               className={`rounded-2xl border p-5 text-left transition ${
                 isActive
-                  ? 'border-fuchsia-400/60 bg-fuchsia-500/10'
+                  ? 'border-white/60 bg-white/10'
                   : 'border-white/10 bg-white/[0.03] hover:border-white/30'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="font-medium text-white">{t.name}</div>
-                {isActive && <span className="text-xs font-mono text-fuchsia-300">ACTIVE</span>}
+                {isActive && <span className="text-xs font-mono text-white">ACTIVE</span>}
               </div>
               <div className="mt-3 flex gap-2">
                 {t.swatch.map((c, i) => (

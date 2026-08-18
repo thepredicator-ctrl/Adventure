@@ -56,7 +56,7 @@ export default function Player() {
             </button>
             <button
               onClick={markCurrentWatched}
-              className="rounded-md border border-fuchsia-400/40 bg-fuchsia-500/20 px-3 py-1.5 text-sm text-fuchsia-100 transition hover:bg-fuchsia-500/30"
+              className="rounded-md border border-white/40 bg-white/15 px-3 py-1.5 text-sm text-white transition hover:bg-white/25"
             >
               &#10003; Mark watched
             </button>
@@ -76,9 +76,9 @@ export default function Player() {
         <div className="mb-4 flex items-center justify-between">
           <div className="text-sm font-medium text-white">Season &amp; Episode</div>
           <div className="font-mono text-xs text-white/50">
-            <span className="text-fuchsia-300">S{pad2(global.season)}</span>
+            <span className="text-white">S{pad2(global.season)}</span>
             <span className="mx-1 text-white/30">·</span>
-            <span className="text-fuchsia-300">E{pad2(global.episode)}</span>
+            <span className="text-white">E{pad2(global.episode)}</span>
             <span className="mx-2 text-white/20">|</span>
             <span className="text-white/40">{seasonEps} eps this season</span>
           </div>
@@ -155,7 +155,7 @@ export default function Player() {
               onClick={() => setServer(s.id)}
               className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
                 global.server === s.id
-                  ? 'border-fuchsia-400/60 bg-fuchsia-500/20 text-white'
+                  ? 'border-white/60 bg-white/15 text-white'
                   : 'border-white/10 bg-white/[0.02] text-white/70 hover:border-white/30'
               }`}
             >
@@ -176,7 +176,7 @@ export default function Player() {
           onClick={() => setAutoplay(!global.autoplay)}
           role="switch"
           aria-checked={global.autoplay}
-          className={`relative h-7 w-12 rounded-full transition ${global.autoplay ? 'bg-fuchsia-500' : 'bg-white/15'}`}
+          className={`relative h-7 w-12 rounded-full transition ${global.autoplay ? 'bg-white' : 'bg-white/15'}`}
         >
           <span
             className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${global.autoplay ? 'left-6' : 'left-1'}`}
@@ -198,7 +198,7 @@ export default function Player() {
                 <button
                   key={`${entry.showId}-${entry.season}-${entry.episode}-${i}`}
                   onClick={() => jumpTo(entry.showId, entry.season, entry.episode)}
-                  className="group flex w-32 shrink-0 flex-col gap-2 rounded-lg border border-white/10 bg-white/[0.02] p-2 text-left transition hover:border-fuchsia-400/40"
+                  className="group flex w-32 shrink-0 flex-col gap-2 rounded-lg border border-white/10 bg-white/[0.02] p-2 text-left transition hover:border-white/40"
                 >
                   <ShowIcon show={s} size={28} />
                   <div className="min-w-0">

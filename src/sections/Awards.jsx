@@ -19,13 +19,13 @@ export default function Awards() {
               key={a.id}
               className={`flex items-center gap-4 rounded-xl border p-5 transition ${
                 isUnlocked
-                  ? 'border-fuchsia-400/40 bg-fuchsia-500/10'
+                  ? 'border-white/40 bg-white/10'
                   : 'border-white/10 bg-white/[0.02] opacity-50'
               }`}
             >
               <div
                 className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg font-mono text-sm font-bold ${
-                  isUnlocked ? 'bg-fuchsia-500/30 text-fuchsia-100' : 'bg-white/5 text-white/40'
+                  isUnlocked ? 'bg-white/25 text-white' : 'bg-white/5 text-white/40'
                 }`}
               >
                 {a.icon}
@@ -37,7 +37,7 @@ export default function Awards() {
                 <div className="mt-0.5 text-xs text-white/50">{a.desc}</div>
               </div>
               {isUnlocked && (
-                <span className="text-xs font-mono text-fuchsia-300">UNLOCKED</span>
+                <span className="text-xs font-mono text-white">UNLOCKED</span>
               )}
             </div>
           );

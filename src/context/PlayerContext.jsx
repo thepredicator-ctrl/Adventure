@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { SHOWS } from '../data/shows.js';
 import { SERVERS } from '../data/servers.js';
-import { THEMES } from '../data/themes.js';
+import { THEMES, DEFAULT_THEME_ID } from '../data/themes.js';
 import { lsGet, lsSet, lsRemove, LS_KEYS } from '../lib/storage.js';
 import { totalEpisodes, epKey, nextEpisode, isAtLastEp } from '../lib/episodes.js';
 
@@ -13,7 +13,7 @@ const DEFAULT_GLOBAL = {
   episode: 1,
   server: 1,
   autoplay: false,
-  theme: 'amethyst',
+  theme: DEFAULT_THEME_ID,
   sessionWatched: 0,
   serversTried: [],
   themesTried: [],

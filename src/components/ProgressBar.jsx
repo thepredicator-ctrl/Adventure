@@ -3,7 +3,7 @@ export default function ProgressBar({ value, max = 100, className = '' }) {
   return (
     <div className={`h-1.5 w-full overflow-hidden rounded-full bg-white/10 ${className}`}>
       <div
-        className="h-full rounded-full bg-gradient-to-r from-fuchsia-400 to-indigo-400 transition-[width] duration-500"
+        className="h-full rounded-full bg-gradient-to-r from-white/70 to-white transition-[width] duration-500"
         style={{ width: `${pct}%` }}
       />
     </div>
