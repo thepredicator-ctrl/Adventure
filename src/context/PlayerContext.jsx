@@ -3,7 +3,7 @@ import { SHOWS } from '../data/shows.js';
 import { SERVERS } from '../data/servers.js';
 import { THEMES, DEFAULT_THEME_ID } from '../data/themes.js';
 import { lsGet, lsSet, lsRemove, LS_KEYS } from '../lib/storage.js';
-import { totalEpisodes, epKey, nextEpisode, isAtLastEp } from '../lib/episodes.js';
+import { totalEpisodes, epKey, nextEpisode, isAtLastEp, displaySeasonNumber } from '../lib/episodes.js';
 
 const PlayerContext = createContext(null);
 
@@ -227,8 +227,8 @@ export function PlayerProvider({ children }) {
   // ---- derived ----
   const currentServer = SERVERS[global.server] ?? SERVERS[1];
   const videoUrl = useMemo(
-    () => currentServer.build(show.id, global.season, global.episode),
-    [currentServer, show.id, global.season, global.episode]
+    () => currentServer.build(show.id, displaySeasonNumber(show, global.season), global.episode),
+    [currentServer, show.id, global.season, show.seasonOffset, global.episode]
   );
 
   const stats = useMemo(() => {

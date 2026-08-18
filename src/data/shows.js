@@ -54,5 +54,17 @@ export const SHOWS = [
     icon: 'KF',
     color: '#ffaa00',
     seasons: [30, 15]
+  },
+  {
+    // Mushoku Tensei: Jobless Reincarnation — exposed under the alias "Adventure Time Two",
+    // surfacing only Season 3. seasonOffset shifts the single internal season entry so it
+    // both displays as "S03" to the user and is sent to upstream embed servers as season 3.
+    id: 'tt11640028',
+    name: 'Adventure Time Two',
+    shortName: 'Adventure Time II',
+    icon: 'A2',
+    color: '#ffffff',
+    seasons: [12],
+    seasonOffset: 2
   }
 ];

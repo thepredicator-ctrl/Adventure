@@ -1,7 +1,7 @@
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { SERVER_LIST } from '../data/servers.js';
 import { SHOWS } from '../data/shows.js';
-import { isAtFirstEp, isAtLastEp } from '../lib/episodes.js';
+import { isAtFirstEp, isAtLastEp, displaySeasonNumber } from '../lib/episodes.js';
 import { pad2 } from '../lib/format.js';
 import ShowIcon from '../components/ShowIcon.jsx';
 import OptionWheel from '../components/OptionWheel.jsx';
@@ -17,15 +17,16 @@ export default function Player() {
   const atFirst = isAtFirstEp(show, global.season, global.episode);
   const atLast = isAtLastEp(show, global.season, global.episode);
   const seasonEps = show.seasons[global.season - 1] ?? 0;
+  const visibleSeason = displaySeasonNumber(show, global.season);
 
-  const seasonItems = show.seasons.map((_, i) => `S${pad2(i + 1)}`);
+  const seasonItems = show.seasons.map((_, i) => `S${pad2(displaySeasonNumber(show, i + 1))}`);
   const episodeItems = Array.from({ length: seasonEps }, (_, i) => `E${pad2(i + 1)}`);
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-semibold tracking-tight">Player</h2>
-        <p className="mt-1 text-white/60">Now playing: <span className="text-white">{show.name}</span> — S{pad2(global.season)}E{pad2(global.episode)}</p>
+        <p className="mt-1 text-white/60">Now playing: <span className="text-white">{show.name}</span> — S{pad2(visibleSeason)}E{pad2(global.episode)}</p>
       </div>
 
       {/* Video */}
@@ -34,7 +35,7 @@ export default function Player() {
           <iframe
             key={videoUrl}
             src={videoUrl}
-            title={`${show.shortName} S${global.season}E${global.episode}`}
+            title={`${show.shortName} S${visibleSeason}E${global.episode}`}
             className="absolute inset-0 h-full w-full"
             allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -76,7 +77,7 @@ export default function Player() {
         <div className="mb-4 flex items-center justify-between">
           <div className="text-sm font-medium text-white">Season &amp; Episode</div>
           <div className="font-mono text-xs text-white/50">
-            <span className="text-white">S{pad2(global.season)}</span>
+            <span className="text-white">S{pad2(visibleSeason)}</span>
             <span className="mx-1 text-white/30">·</span>
             <span className="text-white">E{pad2(global.episode)}</span>
             <span className="mx-2 text-white/20">|</span>
@@ -203,7 +204,7 @@ export default function Player() {
                   <ShowIcon show={s} size={28} />
                   <div className="min-w-0">
                     <div className="truncate text-xs font-medium text-white">{s.shortName}</div>
-                    <div className="text-[11px] text-white/50">S{pad2(entry.season)}E{pad2(entry.episode)}</div>
+                    <div className="text-[11px] text-white/50">S{pad2(displaySeasonNumber(s, entry.season))}E{pad2(entry.episode)}</div>
                   </div>
                 </button>
               );

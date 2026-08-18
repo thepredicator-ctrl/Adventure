@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { usePlayer } from '../context/PlayerContext.jsx';
 import { SHOWS } from '../data/shows.js';
-import { totalEpisodes, watchedPct } from '../lib/episodes.js';
+import { totalEpisodes, watchedPct, displaySeasonNumber } from '../lib/episodes.js';
 import ShowIcon from '../components/ShowIcon.jsx';
 import ProgressBar from '../components/ProgressBar.jsx';
 
@@ -49,7 +49,9 @@ export default function Shows() {
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-medium text-white">{s.name}</div>
                   <div className="mt-0.5 text-xs text-white/50">
-                    {s.seasons.length} seasons · {total} eps
+                    {s.seasonOffset
+                      ? `Season ${displaySeasonNumber(s, 1)} only · ${total} eps`
+                      : `${s.seasons.length} season${s.seasons.length === 1 ? '' : 's'} · ${total} eps`}
                   </div>
                 </div>
               </div>

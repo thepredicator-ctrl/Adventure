@@ -1,7 +1,9 @@
 import { usePlayer } from '../context/PlayerContext.jsx';
+import { displaySeasonNumber } from '../lib/episodes.js';
 
 export default function Header({ activeLabel }) {
   const { show, global } = usePlayer();
+  const visibleSeason = displaySeasonNumber(show, global.season);
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/10 bg-black/40 px-6 py-4 backdrop-blur-xl">
       <div className="flex items-center gap-3">
@@ -15,7 +17,7 @@ export default function Header({ activeLabel }) {
         <div>
           <div className="text-sm font-semibold tracking-tight text-white">adventure</div>
           <div className="text-[11px] uppercase tracking-widest text-white/40">
-            S{String(global.season).padStart(2, '0')} · E{String(global.episode).padStart(2, '0')} · {activeLabel}
+            S{String(visibleSeason).padStart(2, '0')} · E{String(global.episode).padStart(2, '0')} · {activeLabel}
           </div>
         </div>
       </div>
