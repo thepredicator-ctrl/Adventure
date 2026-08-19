@@ -7,12 +7,14 @@ import SectionRenderer from './components/SectionRenderer.jsx';
 import Topography from './components/Topography.jsx';
 import Toast from './components/Toast.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
+import OfflineDownloadScreen from './components/OfflineDownloadScreen.jsx';
 import { SECTIONS } from './data/sections.js';
 import { THEMES } from './data/themes.js';
 
 function AppShell() {
   const [active, setActive] = useState(0);
   const [booted, setBooted] = useState(false);
+  const [offlineDone, setOfflineDone] = useState(false);
   const { global } = usePlayer();
   // Fall back to THEMES[0] if the persisted theme id is from the old
   // colored palette and no longer exists.
@@ -30,6 +32,11 @@ function AppShell() {
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
       {/* Boot / loading screen — shows on first load, fades out */}
       {!booted && <LoadingScreen onComplete={() => setBooted(true)} />}
+
+      {/* Offline download prompt — shows after boot, before main app */}
+      {booted && !offlineDone && (
+        <OfflineDownloadScreen onComplete={() => setOfflineDone(true)} />
+      )}
 
       {/* Topographic background */}
       <div className="pointer-events-none fixed inset-0 z-0 opacity-60">
