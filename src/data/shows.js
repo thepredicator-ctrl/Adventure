@@ -56,6 +56,14 @@ export const SHOWS = [
     seasons: [30, 15]
   },
   {
+    id: 'tt0219295',
+    name: 'SpongeBob SquarePants',
+    shortName: 'SpongeBob',
+    icon: 'SB',
+    color: '#ffe135',
+    seasons: [20, 20, 20, 20, 20, 20, 26, 26, 26, 26, 26, 26, 22, 26]
+  },
+  {
     // Mushoku Tensei: Jobless Reincarnation — exposed under the alias "Adventure Time Two",
     // surfacing only Season 3 (27 episodes across two cours). seasonOffset shifts the
     // single internal season entry so it both displays as "S03" to the user and is sent
